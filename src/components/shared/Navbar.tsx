@@ -31,7 +31,7 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollThreshold = 10;
+      const scrollThreshold = 0;
 
       if (window.scrollY > scrollThreshold) {
         setIsScrolled(true);
@@ -47,7 +47,7 @@ export default function Navbar() {
   return (
     <header
       className={`${
-        isScrolled ? " sticky top-0" : ""
+        isScrolled ? " sticky top-0 z-50" : ""
       } mx-auto px-3 w-full bg-rose-900 text-white
       `}
     >
