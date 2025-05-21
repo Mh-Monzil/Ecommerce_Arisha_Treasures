@@ -1,4 +1,6 @@
 import Banner from "@/components/Banner";
+import NewArrivals from "@/components/NewArrivals";
+import ProductsMarquee from "@/components/ProductsMarquee";
 import Container from "@/components/shared/Container";
 
 export default function Home() {
@@ -7,7 +9,10 @@ export default function Home() {
       <Container>
         <Banner />
       </Container>
-      <div className="w-full h-20 bg-black">hello</div>
+      <ProductsMarquee />
+      <Container>
+        <NewArrivals />
+      </Container>
     </div>
   );
 }
