@@ -2,6 +2,7 @@ import Banner from "@/components/Banner";
 import NewArrivals from "@/components/NewArrivals";
 import ProductsMarquee from "@/components/ProductsMarquee";
 import Container from "@/components/shared/Container";
+import Testimonial from "@/components/Testimonial";
 import TopSelling from "@/components/TopSelling";
 
 export default function Home() {
@@ -14,6 +15,7 @@ export default function Home() {
       <Container>
         <NewArrivals />
         <TopSelling />
+        <Testimonial />
       </Container>
     </div>
   );
