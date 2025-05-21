@@ -1,5 +1,6 @@
 import Banner from "@/components/Banner";
 import NewArrivals from "@/components/NewArrivals";
+import OurGallery from "@/components/OurGallery";
 import ProductsMarquee from "@/components/ProductsMarquee";
 import Container from "@/components/shared/Container";
 import Testimonial from "@/components/Testimonial";
@@ -16,6 +17,7 @@ export default function Home() {
         <NewArrivals />
         <TopSelling />
         <Testimonial />
+        <OurGallery />
       </Container>
     </div>
   );
