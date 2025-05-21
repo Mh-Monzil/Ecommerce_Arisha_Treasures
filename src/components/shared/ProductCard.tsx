@@ -34,7 +34,7 @@ const ProductCard = ({ product }: { product: TProduct }) => {
         </span>
       </div>
       <div className="px-4 py-2">
-        <h3 className="text-lg font-bold">{product.title}</h3>
+        <h3 className="text-lg font-bold text-gray-800">{product.title}</h3>
         <p className="text-lg font-bold text-rose-600">{product.price}</p>
         <Button className="w-full mt-4 bg-white text-black border hover:bg-rose-900 hover:text-white duration-200 ease-in-out cursor-pointer">
           Add to Cart

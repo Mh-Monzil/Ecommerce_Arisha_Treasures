@@ -5,26 +5,26 @@ import arrival2 from "@/assets/new_arrivals/new-arrival2.jpeg";
 import arrival3 from "@/assets/new_arrivals/new-arrival3.jpeg";
 import arrival4 from "@/assets/new_arrivals/new-arrival4.jpeg";
 import ProductCard, { TProduct } from "./shared/ProductCard";
-import { ArrowRight, CircleArrowRight } from "lucide-react";
+import { CircleArrowRight } from "lucide-react";
 
 const products: TProduct[] = [
   {
-    title: "REPUBLIC KALANI D2-A-AYLA | EID LUXURY LAWN",
-    price: "৳8,999.00",
+    title: "REPUBLIC KALANI D4-A-RHEA | EID LUXURY LAWN",
+    price: "৳9,999.00",
     image: arrival1,
   },
   {
-    title: "REPUBLIC KALANI D2-A-AYLA | EID LUXURY LAWN",
+    title: "REPUBLIC KALANI D1-B-ZEHRA | EID LUXURY LAWN",
     price: "৳8,999.00",
     image: arrival2,
   },
   {
-    title: "REPUBLIC KALANI D2-A-AYLA | EID LUXURY LAWN",
-    price: "৳8,999.00",
+    title: "REPUBLIC KALANI D1-A - AYRA | EID LUXURY LAWN",
+    price: "৳7,999.00",
     image: arrival3,
   },
   {
-    title: "REPUBLIC KALANI D2-A-AYLA | EID LUXURY LAWN",
+    title: "REPUBLIC KALANI D3-B-SITARA | EID LUXURY LAWN",
     price: "৳8,999.00",
     image: arrival4,
   },
