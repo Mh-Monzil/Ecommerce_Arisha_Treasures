@@ -3,7 +3,12 @@
 import { Button } from "@/components/ui/button";
 import { Menu, ShoppingCart, User } from "lucide-react";
 import Link from "next/link";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { useEffect, useState } from "react";
 
 const navLinks = [
@@ -92,13 +97,16 @@ export default function Navbar() {
                 </Button>
               </SheetTrigger>
               <SheetContent side="left" className="w-64 bg-white p-6">
-                <nav className="flex flex-col gap-6 mt-10">
+                <SheetTitle className="text-2xl">
+                  Arisha&#39;s Treasure
+                </SheetTitle>
+                <nav className="flex flex-col gap-4 mt-4">
                   {navLinks.map((link) => (
                     <Link
                       key={link.href}
                       href={link.href}
                       onClick={() => setOpen(false)}
-                      className="font-medium text-gray-800 relative group"
+                      className="font-medium text-gray-800 relative group border-b p-2 rounded-md"
                     >
                       {link.name}
                       <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-amber duration-500 transition-all group-hover:w-full"></span>

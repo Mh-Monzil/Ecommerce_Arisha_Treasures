@@ -1,4 +1,5 @@
 import Banner from "@/components/Banner";
+import LatestOffers from "@/components/LatestOffers";
 import NewArrivals from "@/components/NewArrivals";
 import OurGallery from "@/components/OurGallery";
 import ProductsMarquee from "@/components/ProductsMarquee";
@@ -18,6 +19,9 @@ export default function Home() {
         <TopSelling />
         <Testimonial />
         <OurGallery />
+        <div className="relative mt-32 lg:mt-24">
+          <LatestOffers />
+        </div>
       </Container>
     </div>
   );

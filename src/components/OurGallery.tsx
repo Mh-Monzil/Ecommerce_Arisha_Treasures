@@ -12,7 +12,7 @@ const OurGallery = () => {
   return (
     <div className="py-10 lg:py-20 px-4">
       <h2 className="text-4xl lg:text-5xl font-bold">Our gallery</h2>
-      <div className="max-h-[600px] grid grid-cols-1 lg:grid-cols-4 gap-4 mt-4">
+      <div className="lg:max-h-[600px] grid grid-cols-1 lg:grid-cols-4 gap-4 mt-4">
         {images.map((image, index) => (
           <div
             key={index}
