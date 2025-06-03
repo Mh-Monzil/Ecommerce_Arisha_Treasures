@@ -10,7 +10,6 @@ import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { useRegisterMutation } from "@/features/authApi";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import Error from "next/error";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -66,10 +65,10 @@ export default function RegisterPage() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="flex justify-center">
-          <Image src="/placeholder.svg" alt="Logo" width={48} height={48} />
-        </div>
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+        <h1 className="text-3xl lg:text-4xl text-center font-bold text-rose-700">
+          Arisha&#39;s Treasures
+        </h1>
+        <h2 className="mt-4 text-center text-3xl font-extrabold text-gray-900">
           Create your account
         </h2>
       </div>
