@@ -1,11 +1,49 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import React from "react";
+import { useLoginMutation } from "@/features/authApi";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 export default function LoginPage() {
+  const router = useRouter();
+  const [loginUser] = useLoginMutation();
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
+    const data = Object.fromEntries(formData);
+
+    console.log(data);
+
+    try {
+      const res = await loginUser(data);
+      console.log(res);
+
+      if (res.data) {
+        Cookies.set("token", res.data, { expires: 7 });
+        toast.success("Login successful! Redirecting...");
+
+        setTimeout(() => {
+          router.push("/");
+        }, 2000);
+      } else {
+        toast.error("Login failed");
+      }
+    } catch (error) {
+      toast.error("Login failed");
+      console.log(error);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -28,9 +66,9 @@ export default function LoginPage() {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6" action="#" method="POST">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <Label htmlFor="email">Email address</Label>
+              <Label htmlFor="email">Email</Label>
               <div className="mt-1">
                 <Input
                   id="email"
@@ -83,7 +121,7 @@ export default function LoginPage() {
             </div>
           </form>
 
-          <div className="mt-6">
+          {/* <div className="mt-6">
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-gray-300" />
@@ -128,7 +166,7 @@ export default function LoginPage() {
                 </Button>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,7 +12,7 @@ import toast from "react-hot-toast";
 
 export default function RegisterPage() {
   const router = useRouter();
-  const [register, { isLoading }] = useRegisterMutation();
+  const [registerUser] = useRegisterMutation();
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setConfirmShowPassword] = useState(false);
@@ -44,7 +43,7 @@ export default function RegisterPage() {
     setError("");
 
     try {
-      const res = await register(data);
+      const res = await registerUser(data);
       console.log(res);
 
       if (res.data) {
@@ -89,7 +88,7 @@ export default function RegisterPage() {
               </div>
             </div>
             <div>
-              <Label htmlFor="email">Email address</Label>
+              <Label htmlFor="email">Email</Label>
               <div className="mt-1">
                 <Input
                   id="email"
