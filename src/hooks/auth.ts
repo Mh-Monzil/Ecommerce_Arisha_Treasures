@@ -1,6 +1,12 @@
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 
+export interface User {
+  id: string;
+  email: string;
+  role: string;
+}
+
 export const setToken = (token: string) => {
   Cookies.set("token", token, { expires: 7 }); // expires in 7 days
 };
@@ -18,7 +24,7 @@ export const getUserFromToken = () => {
     const token = getToken();
     if (!token) return null;
 
-    const decoded = jwtDecode(token);
+    const decoded: User = jwtDecode(token);
 
     return decoded;
   } catch (error) {

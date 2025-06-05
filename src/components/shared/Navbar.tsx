@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Menu, ShoppingCart, User } from "lucide-react";
+import { LogOut, Menu, ShoppingCart, User } from "lucide-react";
 import Link from "next/link";
 import {
   Sheet,
@@ -10,6 +10,10 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/app/store";
+import { setUser } from "@/features/authSlice";
+import { removeToken } from "@/hooks/auth";
 
 const navLinks = [
   {
@@ -33,6 +37,23 @@ const navLinks = [
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const dispatch = useDispatch();
+
+  const user = useSelector((state: RootState) => state.auth.user);
+
+  if (
+    user?.role === "admin" &&
+    !navLinks.some(
+      (link) => link.name === "Dashboard" && link.href === "/dashboard"
+    )
+  ) {
+    navLinks.push({
+      name: "Dashboard",
+      href: "/dashboard",
+    });
+  }
+
+  console.log(user);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -81,9 +102,19 @@ export default function Navbar() {
           <Link href="#">
             <ShoppingCart className="h-6 w-6" />
           </Link>
-          <Link href="#">
-            <User className="h-6 w-6" />
-          </Link>
+          {user ? (
+            <LogOut
+              onClick={() => {
+                dispatch(setUser(null));
+                removeToken();
+              }}
+              className="h-6 w-6"
+            />
+          ) : (
+            <Link href="/login">
+              <User className="h-6 w-6" />
+            </Link>
+          )}
 
           <div className="lg:hidden">
             <Sheet open={open} onOpenChange={setOpen}>
