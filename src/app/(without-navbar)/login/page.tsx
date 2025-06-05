@@ -10,9 +10,12 @@ import React from "react";
 import { useLoginMutation } from "@/features/authApi";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import Cookies from "js-cookie";
+import { getUserFromToken, setToken } from "@/hooks/auth";
+import { useDispatch } from "react-redux";
+import { setUser } from "@/features/authSlice";
 
 export default function LoginPage() {
+  const dispatch = useDispatch();
   const router = useRouter();
   const [loginUser] = useLoginMutation();
 
@@ -29,7 +32,11 @@ export default function LoginPage() {
       console.log(res);
 
       if (res.data) {
-        Cookies.set("token", res.data, { expires: 7 });
+        setToken(res.data.data);
+        const user = getUserFromToken();
+        if (user) {
+          dispatch(setUser(user));
+        }
         toast.success("Login successful! Redirecting...");
 
         setTimeout(() => {
