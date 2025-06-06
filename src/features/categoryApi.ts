@@ -2,10 +2,10 @@ import { commonApi } from "./api";
 
 export const categoryApi = commonApi.injectEndpoints({
   endpoints: (builder) => ({
-    getAllCategoriesFromCategory: builder.query({
+    getAllCategories: builder.query({
       query: () => "/category",
     }),
   }),
 });
 
-export const { useGetAllCategoriesFromCategoryQuery } = categoryApi;
+export const { useGetAllCategoriesQuery } = categoryApi;
