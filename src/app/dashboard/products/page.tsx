@@ -298,21 +298,23 @@ const ProductsPage = () => {
           </CardContent>
         </Card>
       ) : (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="overflow-y-auto lg:h-[67vh] grid gap-6 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
           {sortedProducts.map((product) => (
-            <Card key={product.id} className="overflow-hidden">
-              <div className="aspect-square relative">
-                <Image
-                  src={product.image || "/placeholder.svg"}
-                  alt={product.name}
-                  width={200}
-                  height={200}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <CardContent className="p-4">
+            <Card key={product.id} className="overflow-hidden h-[490px] p-0">
+              <Image
+                src={
+                  Array.isArray(product?.images)
+                    ? product.images[0]
+                    : "/placeholder.svg"
+                }
+                alt={product.name}
+                width={250}
+                height={250}
+                className="w-full h-72 object-cover object-top"
+              />
+              <CardContent className="px-4">
                 <div className="space-y-2">
-                  <h3 className="font-semibold truncate">{product.name}</h3>
+                  <h3 className="font-semibold truncate">{product.title}</h3>
                   <p className="text-sm text-muted-foreground">
                     {product.category}
                   </p>
