@@ -103,6 +103,8 @@ const ProductsPage = () => {
     return <Package className="h-4 w-4 text-green-500" />;
   };
 
+  console.log("Products:", sortedProducts);
+
   return (
     <div className="space-y-6">
       {/* Filters and Actions */}
@@ -119,7 +121,7 @@ const ProductsPage = () => {
             </div>
 
             {/* // Add Product Button */}
-            <AddProduct categories={categories} />
+            <AddProduct categories={categories as string[]} />
           </div>
         </CardHeader>
         <CardContent>
@@ -148,7 +150,7 @@ const ProductsPage = () => {
                     <SelectValue placeholder="Category" />
                   </SelectTrigger>
                   <SelectContent>
-                    {categories.map((category: string) => (
+                    {(categories as string[]).map((category: string) => (
                       <SelectItem
                         key={category}
                         value={category}
@@ -214,11 +216,11 @@ const ProductsPage = () => {
 
       {/* Products Display */}
       {viewMode === "list" ? (
-        <Card>
-          <CardContent className="p-0">
+        <Card className="overflow-auto h-[67vh]">
+          <CardContent className="px-3">
             <Table>
               <TableHeader>
-                <TableRow>
+                <TableRow className="">
                   <TableHead>Product</TableHead>
                   <TableHead>Category</TableHead>
                   <TableHead>Price</TableHead>
@@ -231,15 +233,19 @@ const ProductsPage = () => {
               </TableHeader>
               <TableBody>
                 {sortedProducts.map((product) => (
-                  <TableRow key={product.id}>
+                  <TableRow key={product._id}>
                     <TableCell>
                       <div className="flex items-center space-x-3">
                         <Image
-                          src={product.image || "/placeholder.svg"}
+                          src={
+                            Array.isArray(product?.images)
+                              ? product.images[0]
+                              : "/placeholder.svg"
+                          }
                           alt={product.title}
                           width={48}
                           height={48}
-                          className="h-12 w-12 rounded-lg object-cover"
+                          className="h-12 w-12 rounded-lg object-cover object-top"
                         />
                         <div>
                           <div className="font-medium">{product.title}</div>

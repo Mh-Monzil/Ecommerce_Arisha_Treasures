@@ -85,7 +85,7 @@ const AddProduct = ({ categories }: { categories: string[] }) => {
           </Button>
         </DialogTrigger>
 
-        <DialogContent className="overflow-y-scroll max-h-[90vh]">
+        <DialogContent className="overflow-y-auto max-h-[90vh]">
           <DialogHeader>
             <DialogTitle>Add New Product</DialogTitle>
             <DialogDescription>
