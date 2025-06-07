@@ -6,7 +6,6 @@ import {
   ShoppingCart,
   Users,
   Settings,
-  Heart,
   Tag,
   Truck,
   CreditCard,
@@ -36,6 +35,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 const data = {
   navMain: [
@@ -43,7 +43,6 @@ const data = {
       title: "Overview",
       url: "/dashboard",
       icon: BarChart3,
-      isActive: true,
     },
     {
       title: "Products",
@@ -96,6 +95,9 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const path = usePathname();
+  console.log("Current Path:", path);
+
   return (
     <Sidebar variant="inset" {...props}>
       <SidebarHeader>
@@ -128,11 +130,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarMenu>
               {data.navMain.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild isActive={item.isActive}>
-                    <a href={item.url}>
+                  <SidebarMenuButton asChild isActive={item.url === path}>
+                    <Link href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
