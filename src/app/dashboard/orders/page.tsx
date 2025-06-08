@@ -64,153 +64,39 @@ import {
   Download,
   Printer,
   RefreshCw,
+  Plus,
+  Trash2,
 } from "lucide-react";
-import { useGetAllOrdersQuery } from "@/features/orderApi";
+import {
+  useGetAllOrdersQuery,
+  useUpdateOrderMutation,
+} from "@/features/orderApi";
 import { IOrder, IOrderItem } from "@/interfaces/order";
-
-// Mock order data
-// const orders = [
-//   {
-//     id: "ORD-3210",
-//     customer: {
-//       name: "Olivia Martin",
-//       email: "olivia.martin@email.com",
-//       phone: "+1 (555) 123-4567",
-//       avatar: "/placeholder.svg?height=32&width=32",
-//     },
-//     items: [
-//       { name: "Floral Summer Dress", quantity: 1, price: 89.99, sku: "FSD001" },
-//       { name: "Designer Handbag", quantity: 1, price: 299.99, sku: "DH003" },
-//     ],
-//     total: 389.98,
-//     status: "Processing",
-//     paymentStatus: "Paid",
-//     shippingAddress: {
-//       street: "123 Fashion Ave",
-//       city: "New York",
-//       state: "NY",
-//       zip: "10001",
-//       country: "USA",
-//     },
-//     orderDate: "2024-01-15T10:30:00Z",
-//     estimatedDelivery: "2024-01-22",
-//     trackingNumber: null,
-//     notes: "",
-//   },
-//   {
-//     id: "ORD-3209",
-//     customer: {
-//       name: "Ava Johnson",
-//       email: "ava.johnson@email.com",
-//       phone: "+1 (555) 987-6543",
-//       avatar: "/placeholder.svg?height=32&width=32",
-//     },
-//     items: [{ name: "Silk Blouse", quantity: 2, price: 124.5, sku: "SB002" }],
-//     total: 249.0,
-//     status: "Shipped",
-//     paymentStatus: "Paid",
-//     shippingAddress: {
-//       street: "456 Style Street",
-//       city: "Los Angeles",
-//       state: "CA",
-//       zip: "90210",
-//       country: "USA",
-//     },
-//     orderDate: "2024-01-14T14:20:00Z",
-//     estimatedDelivery: "2024-01-21",
-//     trackingNumber: "1Z999AA1234567890",
-//     notes: "Customer requested expedited shipping",
-//   },
-//   {
-//     id: "ORD-3208",
-//     customer: {
-//       name: "Maya Johnson",
-//       email: "maya.johnson@email.com",
-//       phone: "+1 (555) 456-7890",
-//       avatar: "/placeholder.svg?height=32&width=32",
-//     },
-//     items: [
-//       { name: "Evening Gown", quantity: 1, price: 459.99, sku: "EG006" },
-//       { name: "Casual Jeans", quantity: 1, price: 79.99, sku: "CJ005" },
-//     ],
-//     total: 539.98,
-//     status: "Delivered",
-//     paymentStatus: "Paid",
-//     shippingAddress: {
-//       street: "789 Boutique Blvd",
-//       city: "Chicago",
-//       state: "IL",
-//       zip: "60601",
-//       country: "USA",
-//     },
-//     orderDate: "2024-01-13T09:15:00Z",
-//     estimatedDelivery: "2024-01-20",
-//     trackingNumber: "1Z999AA1234567891",
-//     notes: "",
-//   },
-//   {
-//     id: "ORD-3207",
-//     customer: {
-//       name: "Sophia Anderson",
-//       email: "sophia.anderson@email.com",
-//       phone: "+1 (555) 321-0987",
-//       avatar: "/placeholder.svg?height=32&width=32",
-//     },
-//     items: [{ name: "Winter Coat", quantity: 1, price: 199.99, sku: "WC004" }],
-//     total: 199.99,
-//     status: "Cancelled",
-//     paymentStatus: "Refunded",
-//     shippingAddress: {
-//       street: "321 Fashion District",
-//       city: "Miami",
-//       state: "FL",
-//       zip: "33101",
-//       country: "USA",
-//     },
-//     orderDate: "2024-01-12T16:45:00Z",
-//     estimatedDelivery: null,
-//     trackingNumber: null,
-//     notes: "Customer requested cancellation due to size concerns",
-//   },
-//   {
-//     id: "ORD-3206",
-//     customer: {
-//       name: "Emma Wilson",
-//       email: "emma.wilson@email.com",
-//       phone: "+1 (555) 654-3210",
-//       avatar: "/placeholder.svg?height=32&width=32",
-//     },
-//     items: [
-//       { name: "Floral Summer Dress", quantity: 1, price: 89.99, sku: "FSD001" },
-//       { name: "Silk Blouse", quantity: 1, price: 124.5, sku: "SB002" },
-//     ],
-//     total: 214.49,
-//     status: "Pending",
-//     paymentStatus: "Pending",
-//     shippingAddress: {
-//       street: "654 Trendy Lane",
-//       city: "Seattle",
-//       state: "WA",
-//       zip: "98101",
-//       country: "USA",
-//     },
-//     orderDate: "2024-01-11T11:30:00Z",
-//     estimatedDelivery: "2024-01-25",
-//     trackingNumber: null,
-//     notes: "Payment verification in progress",
-//   },
-// ];
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import toast from "react-hot-toast";
 
 const OrdersPage = () => {
-  const { data: orders, isLoading, isFetching } = useGetAllOrdersQuery();
+  const {
+    data: orders,
+    isLoading,
+    isFetching,
+    refetch,
+  } = useGetAllOrdersQuery({});
+  const [updateOrder] = useUpdateOrderMutation();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("all");
-  const [selectedPaymentStatus, setSelectedPaymentStatus] = useState("all");
+  // const [selectedPaymentStatus, setSelectedPaymentStatus] = useState("all");
   const [dateRange, setDateRange] = useState("all");
   const [selectedOrder, setSelectedOrder] = useState<(typeof orders)[0] | null>(
     null
   );
   const [isOrderDetailOpen, setIsOrderDetailOpen] = useState(false);
+  const [isEditOrderOpen, setIsEditOrderOpen] = useState(false);
+  const [editingOrder, setEditingOrder] = useState<(typeof orders)[0] | null>(
+    null
+  );
 
   if (isLoading || isFetching) {
     return (
@@ -224,14 +110,16 @@ const OrdersPage = () => {
 
   const allStatuses = orders?.data?.map((order: IOrder) => order.status);
   const statuses = ["all", ...new Set(allStatuses)];
-  const paymentStatuses = ["all", "Pending", "Paid", "Refunded", "Failed"];
-  const dateRanges = ["all", "today", "week", "month", "quarter"];
 
   const filteredOrders = orders?.data?.filter((order: IOrder) => {
     const matchesSearch =
-      order._id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      order.user?.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      order.user?.email.toLowerCase().includes(searchTerm.toLowerCase());
+      order.orderId.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (order.user ? order.user.name : order.name)
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase()) ||
+      (order.user ? order.user.email : order.email)
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase());
     const matchesStatus =
       selectedStatus === "all" || order.status === selectedStatus;
 
@@ -276,6 +164,12 @@ const OrdersPage = () => {
     });
   };
 
+  const estimatedDeliveryDate = (createdAt: string) => {
+    const date = new Date(createdAt);
+    date.setDate(date.getDate() + 7);
+    return formatDate(date.toISOString());
+  };
+
   const formatTime = (dateString: string) => {
     return new Date(dateString).toLocaleTimeString("en-US", {
       hour: "2-digit",
@@ -288,6 +182,11 @@ const OrdersPage = () => {
     setIsOrderDetailOpen(true);
   };
 
+  const openEditOrder = (order: (typeof orders)[0]) => {
+    setEditingOrder({ ...order });
+    setIsEditOrderOpen(true);
+  };
+
   const totalRevenue = orders?.data?.reduce(
     (sum: number, order: IOrder) => sum + order.totalPrice,
     0
@@ -298,9 +197,27 @@ const OrdersPage = () => {
   const processingOrders = orders?.data?.filter(
     (order: IOrder) => order.status === "processing"
   ).length;
-  const deliveredOrders = orders?.data?.filter(
-    (order) => order.status === "delivered"
-  ).length;
+  // const deliveredOrders = orders?.data?.filter(
+  //   (order) => order.status === "delivered"
+  // ).length;
+
+  const updateEditedOrder = async () => {
+    try {
+      if (editingOrder) {
+        const res = await updateOrder({
+          id: editingOrder._id,
+          data: editingOrder,
+        });
+        setIsEditOrderOpen(false);
+        console.log("Order updated:", res);
+        setEditingOrder(null);
+        refetch();
+        toast.success("Order updated successfully!");
+      }
+    } catch (error) {
+      console.error("Error updating order:", error);
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -523,15 +440,11 @@ const OrdersPage = () => {
                           <Eye className="h-4 w-4 mr-2" />
                           View Details
                         </DropdownMenuItem>
-                        <DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => openEditOrder(order)}>
                           <Edit className="h-4 w-4 mr-2" />
                           Edit Order
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem>
-                          <Truck className="h-4 w-4 mr-2" />
-                          Update Shipping
-                        </DropdownMenuItem>
                         <DropdownMenuItem>
                           <Printer className="h-4 w-4 mr-2" />
                           Print Invoice
@@ -548,7 +461,7 @@ const OrdersPage = () => {
 
       {/* Order Detail Modal */}
       <Dialog open={isOrderDetailOpen} onOpenChange={setIsOrderDetailOpen}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="min-w-full lg:min-w-5xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex items-center space-x-2">
               <span>Order Details - {selectedOrder?.orderId}</span>
@@ -696,7 +609,7 @@ const OrdersPage = () => {
               </Card>
 
               {/* Payment & Status */}
-              <div className="grid gap-6 md:grid-cols-2">
+              <div className="grid gap-6 lg:grid-cols-2">
                 <Card>
                   <CardHeader>
                     <CardTitle className="text-lg flex items-center space-x-2">
@@ -708,7 +621,7 @@ const OrdersPage = () => {
                     <div className="space-y-2">
                       <div className="flex justify-between">
                         <span>Status:</span>
-                        {/* {getPaymentStatusBadge(selectedOrder.paymentStatus)} */}
+                        <span className="font-medium">COD</span>
                       </div>
                       <div className="flex justify-between">
                         <span>Total Amount:</span>
@@ -737,9 +650,7 @@ const OrdersPage = () => {
                         <div className="flex justify-between">
                           <span>Estimated Delivery:</span>
                           <span>
-                            {formatDate(
-                              selectedOrder.createdAt + 7 * 24 * 60 * 60
-                            )}
+                            {estimatedDeliveryDate(selectedOrder.createdAt)}
                           </span>
                         </div>
                       )}
@@ -766,7 +677,10 @@ const OrdersPage = () => {
                   <Printer className="h-4 w-4 mr-2" />
                   Print Invoice
                 </Button>
-                <Button variant="outline">
+                <Button
+                  variant="outline"
+                  onClick={() => openEditOrder(selectedOrder)}
+                >
                   <Edit className="h-4 w-4 mr-2" />
                   Edit Order
                 </Button>
@@ -776,6 +690,426 @@ const OrdersPage = () => {
                 </Button>
               </div>
             </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit Order Modal */}
+      <Dialog open={isEditOrderOpen} onOpenChange={setIsEditOrderOpen}>
+        <DialogContent className="min-w-full lg:min-w-5xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center space-x-2">
+              <Edit className="h-5 w-5" />
+              <span>Edit Order - {editingOrder?.id}</span>
+            </DialogTitle>
+            <DialogDescription>
+              Modify order details, status, and customer information
+            </DialogDescription>
+          </DialogHeader>
+          {editingOrder && (
+            <Tabs defaultValue="details" className="w-full">
+              <TabsList className="grid w-full grid-cols-4">
+                <TabsTrigger value="details">Order Details</TabsTrigger>
+                <TabsTrigger value="items">Items</TabsTrigger>
+                <TabsTrigger value="customer">Customer</TabsTrigger>
+                <TabsTrigger value="shipping">Shipping</TabsTrigger>
+              </TabsList>
+
+              {/* Order Details Tab */}
+              <TabsContent value="details" className="space-y-6">
+                <div className="grid gap-6 md:grid-cols-2">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-lg">Order Status</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="order-status">Order Status</Label>
+                        <Select
+                          value={editingOrder.status}
+                          onValueChange={(value) =>
+                            setEditingOrder({ ...editingOrder, status: value })
+                          }
+                        >
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="pending">Pending</SelectItem>
+                            <SelectItem value="processing">
+                              Processing
+                            </SelectItem>
+                            <SelectItem value="delivered">Delivered</SelectItem>
+                            <SelectItem value="cancelled">Cancelled</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="payment-status">Payment Status</Label>
+                        <Input
+                          id="payment-status"
+                          type="text"
+                          defaultValue={
+                            editingOrder.status === "delivered" ? "COD" : "Due"
+                          }
+                          readOnly
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="tracking-number">Tracking Number</Label>
+                        <Input
+                          id="tracking-number"
+                          value={editingOrder.trackingNumber || ""}
+                          onChange={(e) =>
+                            setEditingOrder({
+                              ...editingOrder,
+                              trackingNumber: e.target.value,
+                            })
+                          }
+                          placeholder="Enter tracking number"
+                        />
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-lg">
+                        Delivery Information
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="estimated-delivery">
+                          Estimated Delivery Date
+                        </Label>
+                        <Input
+                          id="estimated-delivery"
+                          type="text"
+                          defaultValue={estimatedDeliveryDate(
+                            editingOrder.createdAt
+                          )}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="order-notes">Order Notes</Label>
+                        <Textarea
+                          id="order-notes"
+                          value={editingOrder.notes}
+                          onChange={(e) =>
+                            setEditingOrder({
+                              ...editingOrder,
+                              notes: e.target.value,
+                            })
+                          }
+                          placeholder="Add internal notes about this order..."
+                          rows={3}
+                        />
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </TabsContent>
+
+              {/* Items Tab */}
+              <TabsContent value="items" className="space-y-6">
+                <Card>
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="text-lg">Order Items</CardTitle>
+                      <Button size="sm" variant="outline">
+                        <Plus className="h-4 w-4 mr-2" />
+                        Add Item
+                      </Button>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      {editingOrder.orderItems.map(
+                        (item: IOrderItem, index: number) => (
+                          <div
+                            key={index}
+                            className="flex items-center space-x-4 p-4 border rounded-lg"
+                          >
+                            <div className="w-16 h-16 bg-muted rounded-lg flex items-center justify-center">
+                              <Package className="h-8 w-8 text-muted-foreground" />
+                            </div>
+                            <div className="flex-1 space-y-2">
+                              <div className="grid gap-2 md:grid-cols-3">
+                                <div>
+                                  <Label className="text-xs">
+                                    Product Title
+                                  </Label>
+                                  <Input
+                                    value={item.productId.title}
+                                    readOnly
+                                  />
+                                </div>
+                                <div>
+                                  <Label htmlFor="quantity" className="text-xs">
+                                    Quantity
+                                  </Label>
+                                  <Input
+                                    id={`quantity`}
+                                    type="number"
+                                    min="1"
+                                    value={item.quantity}
+                                    onChange={(e) => {
+                                      const updatedItems =
+                                        editingOrder.orderItems.map(
+                                          (item: IOrderItem, i: number) =>
+                                            i === index
+                                              ? {
+                                                  ...item,
+                                                  quantity:
+                                                    Number.parseInt(
+                                                      e.target.value
+                                                    ) || 1,
+                                                }
+                                              : item
+                                        );
+                                      setEditingOrder({
+                                        ...editingOrder,
+                                        orderItems: updatedItems,
+                                        totalPrice: updatedItems.reduce(
+                                          (sum: number, item: IOrderItem) =>
+                                            sum +
+                                            item.quantity *
+                                              item.productId.price,
+                                          0
+                                        ),
+                                      });
+                                    }}
+                                  />
+                                </div>
+                                <div>
+                                  <Label className="text-xs">Price</Label>
+                                  <Input
+                                    type="number"
+                                    step="0.01"
+                                    value={item.productId.price.toFixed(2)}
+                                    readOnly
+                                  />
+                                </div>
+                              </div>
+                              <div className="flex items-center justify-end">
+                                <div className="text-sm font-medium">
+                                  Subtotal: $
+                                  {(
+                                    item.quantity * item.productId.price
+                                  ).toFixed(2)}
+                                </div>
+                              </div>
+                            </div>
+                            <Button
+                              variant="outline"
+                              size="icon"
+                              onClick={() => {
+                                const newItems = editingOrder.orderItems.filter(
+                                  (_: IOrderItem, i: number) => i !== index
+                                );
+                                const newTotal = newItems.reduce(
+                                  (sum: number, item: IOrderItem) =>
+                                    sum + item.quantity * item.productId.price,
+                                  0
+                                );
+                                setEditingOrder({
+                                  ...editingOrder,
+                                  orderItems: newItems,
+                                  totalPrice: newTotal,
+                                });
+                              }}
+                              className="mb-3.5 cursor-pointer"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        )
+                      )}
+                      <Separator />
+                      <div className="flex justify-between items-center font-medium text-lg">
+                        <span>Order Total</span>
+                        <span>
+                          $
+                          {editingOrder.orderItems
+                            .reduce(
+                              (sum: number, item: IOrderItem) =>
+                                sum + item.quantity * item.productId.price,
+                              0
+                            )
+                            .toFixed(2)}
+                        </span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              {/* Customer Tab */}
+              <TabsContent value="customer" className="space-y-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg">
+                      Customer Information
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <div className="space-y-2">
+                        <Label htmlFor="customer-name">Full Name</Label>
+                        <Input
+                          id="customer-name"
+                          defaultValue={editingOrder.name}
+                          readOnly
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="customer-email">Email Address</Label>
+                        <Input
+                          id="customer-email"
+                          type="email"
+                          defaultValue={editingOrder.email}
+                          readOnly
+                        />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="customer-phone">Phone Number</Label>
+                      <Input
+                        id="customer-phone"
+                        value={editingOrder.phoneNumber}
+                        onChange={(e) =>
+                          setEditingOrder({
+                            ...editingOrder,
+                            phoneNumber: e.target.value,
+                          })
+                        }
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              {/* Shipping Tab */}
+              <TabsContent value="shipping" className="space-y-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg">Shipping Address</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="street-address">Street Address</Label>
+                      <Input
+                        id="street-address"
+                        value={editingOrder.shippingAddress.street}
+                        onChange={(e) =>
+                          setEditingOrder({
+                            ...editingOrder,
+                            shippingAddress: {
+                              ...editingOrder.shippingAddress,
+                              street: e.target.value,
+                            },
+                          })
+                        }
+                      />
+                    </div>
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <div className="space-y-2">
+                        <Label htmlFor="city">City</Label>
+                        <Input
+                          id="city"
+                          value={editingOrder.shippingAddress.city}
+                          onChange={(e) =>
+                            setEditingOrder({
+                              ...editingOrder,
+                              shippingAddress: {
+                                ...editingOrder.shippingAddress,
+                                city: e.target.value,
+                              },
+                            })
+                          }
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="state">State</Label>
+                        <Input
+                          id="state"
+                          value={editingOrder.shippingAddress.state}
+                          onChange={(e) =>
+                            setEditingOrder({
+                              ...editingOrder,
+                              shippingAddress: {
+                                ...editingOrder.shippingAddress,
+                                state: e.target.value,
+                              },
+                            })
+                          }
+                        />
+                      </div>
+                    </div>
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <div className="space-y-2">
+                        <Label htmlFor="zip">ZIP Code</Label>
+                        <Input
+                          id="zip"
+                          value={editingOrder.shippingAddress.zip}
+                          onChange={(e) =>
+                            setEditingOrder({
+                              ...editingOrder,
+                              shippingAddress: {
+                                ...editingOrder.shippingAddress,
+                                zip: e.target.value,
+                              },
+                            })
+                          }
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="country">Country</Label>
+                        <Input
+                          id="country"
+                          value={editingOrder.shippingAddress.country}
+                          onChange={(e) =>
+                            setEditingOrder({
+                              ...editingOrder,
+                              shippingAddress: {
+                                ...editingOrder.shippingAddress,
+                                country: e.target.value,
+                              },
+                            })
+                          }
+                        />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              {/* Action Buttons */}
+              <div className="flex justify-between pt-6">
+                <div className="flex space-x-2">
+                  <Button
+                    variant="outline"
+                    onClick={() => setIsEditOrderOpen(false)}
+                  >
+                    Cancel
+                  </Button>
+                </div>
+                <div className="flex space-x-2">
+                  <Button
+                    onClick={() => {
+                      // Here you would typically save the changes
+                      console.log("Saving order changes:", editingOrder);
+                      setIsEditOrderOpen(false);
+                      updateEditedOrder();
+                    }}
+                  >
+                    <CheckCircle className="h-4 w-4 mr-2" />
+                    Save Changes
+                  </Button>
+                </div>
+              </div>
+            </Tabs>
           )}
         </DialogContent>
       </Dialog>

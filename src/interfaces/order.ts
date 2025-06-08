@@ -8,7 +8,7 @@ export interface IOrderItem {
 
 export interface IOrder {
   _id: string;
-  orderId?: string;
+  orderId: string;
   user?: IUser | null;
   name: string;
   email: string;

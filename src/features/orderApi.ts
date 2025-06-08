@@ -12,7 +12,22 @@ const orderApi = commonApi.injectEndpoints({
     getAllOrders: builder.query({
       query: () => "/orders",
     }),
+    getSingleOrder: builder.query({
+      query: (id) => `/orders/${id}`,
+    }),
+    updateOrder: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `/orders/${id}`,
+        method: "PATCH",
+        body: data,
+      }),
+    }),
   }),
 });
 
-export const { useCreateOrderMutation, useGetAllOrdersQuery } = orderApi;
+export const {
+  useCreateOrderMutation,
+  useGetAllOrdersQuery,
+  useGetSingleOrderQuery,
+  useUpdateOrderMutation,
+} = orderApi;
