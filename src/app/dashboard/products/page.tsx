@@ -183,7 +183,7 @@ const ProductsPage = () => {
             </div>
 
             {/* // Add Product Button */}
-            <AddProduct categories={categories as string[]} />
+            <AddProduct categories={categories as string[]} refetch={refetch} />
           </div>
         </CardHeader>
         <CardContent>

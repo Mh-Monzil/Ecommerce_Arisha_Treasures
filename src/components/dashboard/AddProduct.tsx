@@ -24,7 +24,13 @@ import Image from "next/image";
 import { useCreateProductMutation } from "@/features/productApi";
 import toast from "react-hot-toast";
 
-const AddProduct = ({ categories }: { categories: string[] }) => {
+const AddProduct = ({
+  categories,
+  refetch,
+}: {
+  categories: string[];
+  refetch: () => void;
+}) => {
   const [createProduct] = useCreateProductMutation();
   const [isAddProductOpen, setIsAddProductOpen] = useState(false);
   const [images, setImages] = useState<File[]>([]);
@@ -68,6 +74,7 @@ const AddProduct = ({ categories }: { categories: string[] }) => {
       console.log(res);
       setImages([]);
       setIsProductSubmitting(false);
+      refetch();
       toast.success("Product created successfully!");
     } catch (error) {
       console.error("Error creating product:", error);
