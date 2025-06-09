@@ -48,17 +48,42 @@ import {
   SortDesc,
 } from "lucide-react";
 import Image from "next/image";
-import { useGetAllProductsQuery } from "@/features/productApi";
+import {
+  useDeleteProductMutation,
+  useGetAllProductsQuery,
+  useUpdateProductMutation,
+} from "@/features/productApi";
 import { IProduct } from "@/interfaces/interface";
 import AddProduct from "@/components/dashboard/AddProduct";
+import ProductDetails from "@/components/dashboard/products/ProductDetails";
+import EditProduct from "@/components/dashboard/products/EditProduct";
+import DeleteProduct from "@/components/dashboard/products/DeleteProduct";
+import toast from "react-hot-toast";
 
 const ProductsPage = () => {
-  const { data: products, isLoading, isFetching } = useGetAllProductsQuery({});
+  const {
+    data: products,
+    isLoading,
+    isFetching,
+    refetch,
+  } = useGetAllProductsQuery({});
+  const [updateEditedProduct] = useUpdateProductMutation();
+  const [deleteProduct] = useDeleteProductMutation();
+
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [viewMode, setViewMode] = useState<"grid" | "list">("list");
   const [sortBy, setSortBy] = useState("title");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+
+  // Product detail, edit, and delete states
+  const [selectedProduct, setSelectedProduct] = useState<IProduct>(
+    {} as IProduct
+  );
+  const [isProductDetailOpen, setIsProductDetailOpen] = useState(false);
+  const [isEditProductOpen, setIsEditProductOpen] = useState(false);
+  const [isDeleteProductOpen, setIsDeleteProductOpen] = useState(false);
+  // const [productsData, setProductsData] = useState(products);
 
   if (isLoading || isFetching) {
     return (
@@ -68,9 +93,10 @@ const ProductsPage = () => {
     );
   }
 
-  const filterCategories = products.data?.map((p: IProduct) => p.category);
-  const categories = [...new Set(filterCategories)];
-  categories?.unshift("all");
+  const filterCategories: string[] = products.data?.map(
+    (p: IProduct) => p.category
+  );
+  const categories: string[] = ["all", ...new Set(filterCategories)];
 
   const filteredProducts = products.data?.filter((product: IProduct) => {
     const matchesSearch = product.title
@@ -103,7 +129,43 @@ const ProductsPage = () => {
     return <Package className="h-4 w-4 text-green-500" />;
   };
 
-  console.log("Products:", sortedProducts);
+  const handleViewProductDetails = (product: IProduct) => {
+    setSelectedProduct(product);
+    setIsProductDetailOpen(true);
+  };
+
+  const handleEditProduct = (product: IProduct) => {
+    setSelectedProduct(product);
+    setIsProductDetailOpen(false);
+    setIsEditProductOpen(true);
+  };
+
+  const handleDeleteProduct = (product: IProduct) => {
+    setSelectedProduct(product);
+    setIsProductDetailOpen(false);
+    setIsDeleteProductOpen(true);
+  };
+
+  const handleSaveProduct = async (updatedProduct: IProduct) => {
+    const res = await updateEditedProduct({
+      id: updatedProduct._id,
+      data: updatedProduct,
+    });
+    if (res.data.success) {
+      toast.success("Product updated successfully!");
+    }
+    refetch();
+  };
+
+  const handleConfirmDelete = async (id: string) => {
+    const res = await deleteProduct(id);
+    console.log(res);
+    if (res.data.success) {
+      toast.success("Product deleted successfully!");
+    }
+    refetch();
+    setIsDeleteProductOpen(false);
+  };
 
   return (
     <div className="space-y-6">
@@ -227,7 +289,6 @@ const ProductsPage = () => {
                   <TableHead>Stock</TableHead>
                   <TableHead>Sales</TableHead>
                   <TableHead>Rating</TableHead>
-                  <TableHead>Status</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
@@ -275,16 +336,23 @@ const ProductsPage = () => {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <DropdownMenuItem>
+                          <DropdownMenuItem
+                            onClick={() => handleViewProductDetails(product)}
+                          >
                             <Eye className="h-4 w-4 mr-2" />
                             View Details
                           </DropdownMenuItem>
-                          <DropdownMenuItem>
+                          <DropdownMenuItem
+                            onClick={() => handleEditProduct(product)}
+                          >
                             <Edit className="h-4 w-4 mr-2" />
                             Edit Product
                           </DropdownMenuItem>
                           <DropdownMenuSeparator />
-                          <DropdownMenuItem className="text-red-600">
+                          <DropdownMenuItem
+                            className="text-red-600"
+                            onClick={() => handleDeleteProduct(product)}
+                          >
                             <Trash2 className="h-4 w-4 mr-2" />
                             Delete Product
                           </DropdownMenuItem>
@@ -335,7 +403,11 @@ const ProductsPage = () => {
                     </span>
                   </div>
                   <div className="flex items-center space-x-2 pt-2">
-                    <Button size="sm" className="flex-1">
+                    <Button
+                      size="sm"
+                      className="flex-1"
+                      onClick={() => handleEditProduct(product)}
+                    >
                       <Edit className="h-4 w-4 mr-1" />
                       Edit
                     </Button>
@@ -346,12 +418,17 @@ const ProductsPage = () => {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => handleViewProductDetails(product)}
+                        >
                           <Eye className="h-4 w-4 mr-2" />
                           View Details
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem className="text-red-600">
+                        <DropdownMenuItem
+                          className="text-red-600"
+                          onClick={() => handleDeleteProduct(product)}
+                        >
                           <Trash2 className="h-4 w-4 mr-2" />
                           Delete
                         </DropdownMenuItem>
@@ -364,6 +441,32 @@ const ProductsPage = () => {
           ))}
         </div>
       )}
+
+      {/* Product Details Modal */}
+      <ProductDetails
+        product={selectedProduct}
+        isOpen={isProductDetailOpen}
+        onOpenChange={setIsProductDetailOpen}
+        onEdit={handleEditProduct}
+        onDelete={handleDeleteProduct}
+      />
+
+      {/* Edit Product Modal */}
+      <EditProduct
+        product={selectedProduct}
+        isOpen={isEditProductOpen}
+        onOpenChange={setIsEditProductOpen}
+        onSave={handleSaveProduct}
+        categories={categories}
+      />
+
+      {/* Delete Product Dialog */}
+      <DeleteProduct
+        product={selectedProduct}
+        isOpen={isDeleteProductOpen}
+        onOpenChange={setIsDeleteProductOpen}
+        onDelete={handleConfirmDelete}
+      />
     </div>
   );
 };

@@ -96,7 +96,6 @@ const data = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const path = usePathname();
-  console.log("Current Path:", path);
 
   return (
     <Sidebar variant="inset" {...props}>

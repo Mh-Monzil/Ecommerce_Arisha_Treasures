@@ -12,7 +12,25 @@ const productApi = commonApi.injectEndpoints({
     getAllProducts: builder.query({
       query: () => "/products",
     }),
+    updateProduct: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `/products/${id}`,
+        method: "PATCH",
+        body: data,
+      }),
+    }),
+    deleteProduct: builder.mutation({
+      query: (id) => ({
+        url: `/products/${id}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
-export const { useCreateProductMutation, useGetAllProductsQuery } = productApi;
+export const {
+  useCreateProductMutation,
+  useGetAllProductsQuery,
+  useUpdateProductMutation,
+  useDeleteProductMutation,
+} = productApi;

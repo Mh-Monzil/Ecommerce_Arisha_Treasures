@@ -1,3 +1,5 @@
+"use client";
+
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 
@@ -12,7 +14,7 @@ export const setToken = (token: string) => {
 };
 
 export const getToken = () => {
-  return Cookies.get("token") || null;
+  return Cookies.get("token");
 };
 
 export const removeToken = () => {
@@ -22,6 +24,7 @@ export const removeToken = () => {
 export const getUserFromToken = () => {
   try {
     const token = getToken();
+    console.log("getToken", token);
     if (!token) return null;
 
     const decoded: User = jwtDecode(token);

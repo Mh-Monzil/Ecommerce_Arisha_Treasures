@@ -106,8 +106,6 @@ const OrdersPage = () => {
     );
   }
 
-  console.log("Orders data:", orders?.data);
-
   const allStatuses = orders?.data?.map((order: IOrder) => order.status);
   const statuses = ["all", ...new Set(allStatuses)];
 
