@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/store";
 import { setUser } from "@/features/authSlice";
 import { removeToken } from "@/hooks/auth";
+import { useCart } from "../cart/CartProvider";
 
 const navLinks = [
   {
@@ -35,6 +36,7 @@ const navLinks = [
 ];
 
 export default function Navbar() {
+  const { items, setIsCartOpen } = useCart();
   const [open, setOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const dispatch = useDispatch();
@@ -96,20 +98,35 @@ export default function Navbar() {
             ))}
           </nav>
         </div>
-        <div className="flex items-center gap-4">
-          <Link href="#">
+        <div className="flex items-center gap-5">
+          <span
+            onClick={() => {
+              setIsCartOpen(true);
+            }}
+            className="relative cursor-pointer border-2 p-1.5 rounded-lg"
+          >
             <ShoppingCart className="h-6 w-6" />
-          </Link>
+            {items.length > 0 && (
+              <span className="absolute -top-2 -right-2 text-sm bg-white text-rose-900 rounded-full px-2 py-0.5">
+                {items.length}
+              </span>
+            )}
+          </span>
           {user ? (
-            <LogOut
+            <span
               onClick={() => {
                 dispatch(setUser(null));
                 removeToken();
               }}
-              className="h-6 w-6"
-            />
+              className="cursor-pointer border-2 p-1.5 rounded-lg"
+            >
+              <LogOut className="h-6 w-6" />
+            </span>
           ) : (
-            <Link href="/login">
+            <Link
+              href="/login"
+              className="cursor-pointer border-2 p-1.5 rounded-lg"
+            >
               <User className="h-6 w-6" />
             </Link>
           )}

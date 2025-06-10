@@ -1,5 +1,6 @@
 "use client";
 
+import { useCart } from "@/components/cart/CartProvider";
 import Container from "@/components/shared/Container";
 import FilterProducts from "@/components/shop/FilterProducts";
 import { Badge } from "@/components/ui/badge";
@@ -38,6 +39,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 
 const ShopPage = () => {
+  const { addToCart } = useCart();
   const { data: products } = useGetAllProductsQuery({});
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -463,6 +465,8 @@ const ShopPage = () => {
                         <Button
                           variant="ghost"
                           size="icon"
+                          disabled={product.stock <= 0}
+                          onClick={() => addToCart(product)}
                           className="bg-white/80 hover:bg-white cursor-pointer"
                         >
                           <ShoppingCart className="h-4 w-4 mr-1" />
@@ -495,10 +499,14 @@ const ShopPage = () => {
                             </span>
                           )}
                         </div>
-                        <Button size="sm" disabled={product.stock <= 0}>
+                        {/* <Button
+                          size="sm"
+                          disabled={product.stock <= 0}
+                          onClick={() => addToCart(product)}
+                        >
                           <ShoppingCart className="h-4 w-4 mr-1" />
                           Add
-                        </Button>
+                        </Button> */}
                       </div>
                     </CardContent>
                   </Card>
@@ -563,6 +571,7 @@ const ShopPage = () => {
                               <Button
                                 className="w-full"
                                 disabled={product.stock <= 0}
+                                onClick={() => addToCart(product)}
                               >
                                 <ShoppingCart className="h-4 w-4 mr-2" />
                                 {product.stock > 0
