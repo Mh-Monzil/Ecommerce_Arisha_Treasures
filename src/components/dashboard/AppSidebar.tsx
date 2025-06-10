@@ -147,10 +147,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               {data.navSecondary.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
+                    <Link href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}

@@ -34,13 +34,14 @@ import {
   X,
 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import React, { useState } from "react";
 
 const ShopPage = () => {
   const { data: products } = useGetAllProductsQuery({});
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [viewMode, setViewMode] = useState<"grid" | "list">("list");
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [sortBy, setSortBy] = useState("price-low");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
@@ -434,17 +435,18 @@ const ShopPage = () => {
                     className="group overflow-hidden hover:shadow-lg transition-shadow py-0"
                   >
                     <div className="relative aspect-[3/4] overflow-hidden">
-                      <Image
-                        src={
-                          product.images
-                            ? product.images[0]
-                            : "/placeholder.svg"
-                        }
-                        alt={product.title}
-                        fill
-                        className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
-                      />
-
+                      <Link href={`/shop/${product._id}`}>
+                        <Image
+                          src={
+                            product.images
+                              ? product.images[0]
+                              : "/placeholder.svg"
+                          }
+                          alt={product.title}
+                          fill
+                          className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
+                        />
+                      </Link>
                       {product.stock <= 0 && (
                         <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
                           <Badge variant="secondary">Out of Stock</Badge>
@@ -468,12 +470,14 @@ const ShopPage = () => {
                       </div>
                     </div>
                     <CardContent className="pb-5 px-4">
-                      <h3 className="font-semibold truncate mb-1">
-                        {product.title}
-                      </h3>
-                      <p className="text-sm text-muted-foreground mb-2">
-                        {product.category}
-                      </p>
+                      <Link href={`/shop/${product._id}`}>
+                        <h3 className="font-semibold truncate mb-1 hover:text-rose-700">
+                          {product.title}
+                        </h3>
+                        <p className="text-sm text-muted-foreground mb-2">
+                          {product.category}
+                        </p>
+                      </Link>
                       <div className="flex items-center space-x-1 mb-2">
                         {renderStars(product.rating)}
                       </div>
