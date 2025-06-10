@@ -53,7 +53,7 @@ import {
   useGetAllProductsQuery,
   useUpdateProductMutation,
 } from "@/features/productApi";
-import { IProduct } from "@/interfaces/interface";
+import { IProduct } from "@/interfaces/product";
 import AddProduct from "@/components/dashboard/AddProduct";
 import ProductDetails from "@/components/dashboard/products/ProductDetails";
 import EditProduct from "@/components/dashboard/products/EditProduct";

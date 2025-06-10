@@ -1,4 +1,4 @@
-import { IProduct } from "./interface";
+import { IProduct } from "./product";
 import { IUser } from "./user";
 
 export interface IOrderItem {

@@ -10,7 +10,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { IProduct } from "@/interfaces/interface";
+import { IProduct } from "@/interfaces/product";
 import { Trash2 } from "lucide-react";
 import Image from "next/image";
 

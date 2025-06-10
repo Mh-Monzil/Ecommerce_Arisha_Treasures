@@ -22,7 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Save } from "lucide-react";
-import { IProduct } from "@/interfaces/interface";
+import { IProduct } from "@/interfaces/product";
 
 interface EditProductModalProps {
   product: IProduct;

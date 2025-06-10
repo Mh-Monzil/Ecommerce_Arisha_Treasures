@@ -8,5 +8,7 @@ export interface IProduct {
   stock: number;
   sales?: number;
   discount: number;
+  rating: number;
+  ratingCount: number;
   isDeleted?: boolean;
 }

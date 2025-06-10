@@ -4,7 +4,6 @@ import React from "react";
 import { Button } from "./ui/button";
 import Image from "next/image";
 import bannerImg from "@/assets/treasure-banner3.png";
-import { getToken } from "@/hooks/auth";
 
 const Banner = () => {
   return (
@@ -18,14 +17,6 @@ const Banner = () => {
           designed to bring out your individuality and cater to your sense of
           style.
         </p>
-        <Button
-          onClick={() => {
-            const token = getToken();
-            console.log(token);
-          }}
-        >
-          Token
-        </Button>
         <Button className="w-full lg:w-fit cursor-pointer rounded-sm text-lg p-6 mt-4">
           Shop Now
         </Button>

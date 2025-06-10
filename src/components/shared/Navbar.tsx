@@ -53,8 +53,6 @@ export default function Navbar() {
     });
   }
 
-  console.log(user);
-
   useEffect(() => {
     const handleScroll = () => {
       const scrollThreshold = 0;

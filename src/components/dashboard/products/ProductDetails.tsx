@@ -11,7 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Edit, Trash2, Star, AlertTriangle, CheckCircle } from "lucide-react";
-import { IProduct } from "@/interfaces/interface";
+import { IProduct } from "@/interfaces/product";
 import Image from "next/image";
 
 interface ProductDetailsModalProps {

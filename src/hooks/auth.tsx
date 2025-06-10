@@ -10,7 +10,9 @@ export interface User {
 }
 
 export const setToken = (token: string) => {
-  Cookies.set("token", token, { expires: 7 }); // expires in 7 days
+  if (typeof window !== "undefined") {
+    Cookies.set("token", token, { expires: 7 }); // expires in 7 days
+  }
 };
 
 export const getToken = () => {
@@ -24,7 +26,6 @@ export const removeToken = () => {
 export const getUserFromToken = () => {
   try {
     const token = getToken();
-    console.log("getToken", token);
     if (!token) return null;
 
     const decoded: User = jwtDecode(token);
