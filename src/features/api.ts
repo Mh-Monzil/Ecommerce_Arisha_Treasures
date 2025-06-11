@@ -6,11 +6,5 @@ export const commonApi = createApi({
     baseUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1`,
     credentials: "include",
   }),
-  endpoints: (builder) => ({
-    getAllCategories: builder.query({
-      query: () => "/",
-    }),
-  }),
+  endpoints: () => ({}),
 });
-
-export const { useGetAllCategoriesQuery } = commonApi;

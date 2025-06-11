@@ -59,6 +59,8 @@ import ProductDetails from "@/components/dashboard/products/ProductDetails";
 import EditProduct from "@/components/dashboard/products/EditProduct";
 import DeleteProduct from "@/components/dashboard/products/DeleteProduct";
 import toast from "react-hot-toast";
+import AddCategory from "@/components/dashboard/AddCategory";
+import { useGetAllCategoriesQuery } from "@/features/categoryApi";
 
 const ProductsPage = () => {
   const {
@@ -69,6 +71,8 @@ const ProductsPage = () => {
   } = useGetAllProductsQuery({});
   const [updateEditedProduct] = useUpdateProductMutation();
   const [deleteProduct] = useDeleteProductMutation();
+  const { data: categoryData, refetch: refetchCategories } =
+    useGetAllCategoriesQuery({});
 
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -92,6 +96,7 @@ const ProductsPage = () => {
       </div>
     );
   }
+  const category = categoryData?.data?.map((c: { name: string }) => c.name);
 
   const filterCategories: string[] = products.data?.map(
     (p: IProduct) => p.category
@@ -167,6 +172,8 @@ const ProductsPage = () => {
     setIsDeleteProductOpen(false);
   };
 
+  console.log(category);
+
   return (
     <div className="space-y-6">
       {/* Filters and Actions */}
@@ -183,7 +190,10 @@ const ProductsPage = () => {
             </div>
 
             {/* // Add Product Button */}
-            <AddProduct categories={categories as string[]} refetch={refetch} />
+            <div className="flex items-center gap-1">
+              <AddCategory refetch={refetchCategories} />
+              <AddProduct categories={category as string[]} refetch={refetch} />
+            </div>
           </div>
         </CardHeader>
         <CardContent>

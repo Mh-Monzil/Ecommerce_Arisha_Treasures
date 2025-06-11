@@ -81,6 +81,7 @@ const AddProduct = ({
     }
     setIsAddProductOpen(false);
   };
+  console.log(categories);
 
   return (
     <div className="flex items-center space-x-2">
@@ -114,24 +115,22 @@ const AddProduct = ({
                 <div className="space-y-2">
                   <Label htmlFor="category">Category</Label>
                   <Select
-                    defaultValue={categories[1]}
+                    defaultValue={categories[0]}
                     onValueChange={setSelectedCategory}
                   >
                     <SelectTrigger className="w-full">
                       <SelectValue placeholder="Select category" />
                     </SelectTrigger>
                     <SelectContent>
-                      {categories
-                        .slice(1)
-                        .map((category: string, index: number) => (
-                          <SelectItem
-                            key={index}
-                            value={category}
-                            className="capitalize"
-                          >
-                            {category}
-                          </SelectItem>
-                        ))}
+                      {categories.map((category: string, index: number) => (
+                        <SelectItem
+                          key={index}
+                          value={category}
+                          className="capitalize"
+                        >
+                          {category}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>
