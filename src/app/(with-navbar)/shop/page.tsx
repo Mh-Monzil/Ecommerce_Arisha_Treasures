@@ -489,9 +489,10 @@ const ShopPage = () => {
                         <div className="flex items-center space-x-2">
                           <span className="text-xl font-bold">
                             $
-                            {(product.price * (product.discount / 100)).toFixed(
-                              2
-                            )}
+                            {(
+                              product.price -
+                              (product.price * product.discount) / 100
+                            ).toFixed(2)}
                           </span>
                           {product.price && (
                             <span className="text-lg text-muted-foreground line-through">

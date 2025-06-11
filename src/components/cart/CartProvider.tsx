@@ -13,6 +13,7 @@ export interface CartItem {
   _id: string;
   title: string;
   price: number;
+  discount: number;
   image: string;
   quantity: number;
   inStock: boolean;
@@ -26,6 +27,7 @@ interface CartContextType {
   clearCart: () => void;
   getTotalItems: () => number;
   getTotalPrice: () => number;
+  getDiscount: () => number;
   isCartOpen: boolean;
   setIsCartOpen: (open: boolean) => void;
 }
@@ -65,6 +67,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         _id: product._id,
         title: product.title,
         price: product.price,
+        discount: product.discount,
         image: product.images[0],
         quantity,
         inStock: product.stock > 0 ? true : false,
@@ -98,7 +101,21 @@ export function CartProvider({ children }: { children: ReactNode }) {
   };
 
   const getTotalPrice = () => {
-    return items.reduce((total, item) => total + item.price * item.quantity, 0);
+    return items.reduce(
+      (total, item) =>
+        total +
+        (item.price * item.quantity -
+          item.price * item.quantity * (item.discount / 100)),
+      0
+    );
+  };
+
+  const getDiscount = () => {
+    return items.reduce(
+      (total, item) =>
+        total + (item.price * item.quantity * item.discount) / 100,
+      0
+    );
   };
 
   return (
@@ -111,6 +128,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         clearCart,
         getTotalItems,
         getTotalPrice,
+        getDiscount,
         isCartOpen,
         setIsCartOpen,
       }}

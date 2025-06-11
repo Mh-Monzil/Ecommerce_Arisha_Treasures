@@ -16,11 +16,12 @@ import {
   ArrowLeft,
   CreditCard,
   Truck,
-  Lock,
   CheckCircle,
   Package,
 } from "lucide-react";
 import Image from "next/image";
+import { useCreateOrderMutation } from "@/features/orderApi";
+import toast from "react-hot-toast";
 
 interface ShippingInfo {
   firstName: string;
@@ -35,8 +36,9 @@ interface ShippingInfo {
 }
 
 const OrderPage = () => {
+  const [placeOrder] = useCreateOrderMutation();
   const router = useRouter();
-  const { items, getTotalPrice, clearCart } = useCart();
+  const { items, getTotalPrice, getDiscount, clearCart } = useCart();
   const [currentStep, setCurrentStep] = useState(1);
   const [isProcessing, setIsProcessing] = useState(false);
   const [orderComplete, setOrderComplete] = useState(false);
@@ -79,6 +81,7 @@ const OrderPage = () => {
   }
 
   const subtotal = getTotalPrice();
+  const discount = getDiscount();
   const shippingCost = shippingMethod === "inside-dhaka" ? 70 : 150;
   const tax = subtotal * 0.08; // 8% tax
   const total = subtotal + shippingCost + tax;
@@ -110,7 +113,7 @@ const OrderPage = () => {
         email: shippingInfo.email,
         phoneNumber: shippingInfo.phone,
         totalPrice: total,
-        discount: 0,
+        discount: discount,
         shippingAddress: {
           street: `${shippingInfo.address}`,
           city: shippingInfo.city,
@@ -126,17 +129,23 @@ const OrderPage = () => {
       };
       console.log(orderData);
 
+      const result = await placeOrder(orderData).unwrap();
+      console.log(result);
+
+      if (!result.success) {
+        toast.error("Order failed!");
+        setIsProcessing(false);
+        return;
+      }
+
+      toast.success("Order placed successfully!");
+      setOrderId(result.data.orderId || "Unknown");
       setOrderComplete(true);
       setIsProcessing(false);
       clearCart();
     } catch (error) {
       console.error("Error creating order:", error);
       setIsProcessing(false);
-      alert(
-        error instanceof Error
-          ? error.message
-          : "Failed to place order. Please try again."
-      );
     }
   };
 
@@ -179,7 +188,7 @@ const OrderPage = () => {
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
                     <span className="font-medium">Order Number:</span>
-                    <span className="font-bold text-lg">{orderId}</span>
+                    <span className="font-bold text-lg">#{orderId}</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="font-medium">Total Amount:</span>
@@ -563,7 +572,11 @@ const OrderPage = () => {
                         </div>
                         <div className="text-right">
                           <div className="font-medium">
-                            ${(item.price * item.quantity).toFixed(2)}
+                            $
+                            {(
+                              item.price * item.quantity -
+                              (item.price * item.quantity * item.discount) / 100
+                            ).toFixed(2)}
                           </div>
                         </div>
                       </div>
@@ -693,7 +706,11 @@ const OrderPage = () => {
                         </p>
                       </div>
                       <div className="text-sm font-medium">
-                        ${(item.price * item.quantity).toFixed(2)}
+                        $
+                        {(
+                          item.price * item.quantity -
+                          (item.price * item.quantity * item.discount) / 100
+                        ).toFixed(2)}
                       </div>
                     </div>
                   ))}

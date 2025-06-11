@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import { useCart } from "@/components/cart/CartProvider";
 import { Minus, Plus, Trash2, ShoppingBag } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 const CartSidebar = () => {
   const {
@@ -20,6 +21,7 @@ const CartSidebar = () => {
     updateQuantity,
     clearCart,
     getTotalPrice,
+    getDiscount,
     isCartOpen,
     setIsCartOpen,
   } = useCart();
@@ -104,8 +106,14 @@ const CartSidebar = () => {
                         </div>
                       </div>
                       <div className="text-right">
-                        <div className="font-medium">
-                          ${(item.price * item.quantity).toFixed(2)}
+                        <div className="font-medium space-x-1">
+                          <span className="">
+                            $
+                            {(
+                              item.price * item.quantity -
+                              (item.price * item.quantity * item.discount) / 100
+                            ).toFixed(2)}
+                          </span>
                         </div>
                         <div className="text-sm text-muted-foreground">
                           ${item.price.toFixed(2)} each
@@ -124,9 +132,20 @@ const CartSidebar = () => {
                   </span>
                 </div>
 
+                <div className="flex justify-between items-center">
+                  <span className="text-lg font-semibold">Discount</span>
+                  <span className="text-lg font-bold">
+                    ${getDiscount().toFixed(2)}
+                  </span>
+                </div>
+
                 <div className="space-y-2">
-                  <Button className="w-full" size="lg">
-                    Proceed to Checkout
+                  <Button
+                    className="w-full"
+                    size="lg"
+                    onClick={() => setIsCartOpen(false)}
+                  >
+                    <Link href="/shop/order">Proceed to Checkout</Link>
                   </Button>
                   <Button
                     variant="outline"
