@@ -174,10 +174,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   <Avatar className="h-8 w-8 rounded-lg">
                     <AvatarImage
                       src="/placeholder.svg?height=32&width=32"
-                      alt={user?.name}
+                      alt={user?.email}
                     />
                     <AvatarFallback className="rounded-lg">
-                      {user?.name}
+                      {user?.email}
                     </AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">

@@ -10,7 +10,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Edit, Trash2, Star, AlertTriangle, CheckCircle } from "lucide-react";
+import { Edit, Star, AlertTriangle, CheckCircle } from "lucide-react";
 import { IProduct } from "@/interfaces/product";
 import Image from "next/image";
 
@@ -27,7 +27,6 @@ const ProductDetails = ({
   isOpen,
   onOpenChange,
   onEdit,
-  onDelete,
 }: ProductDetailsModalProps) => {
   if (!product) return null;
 
