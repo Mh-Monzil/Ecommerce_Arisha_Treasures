@@ -26,6 +26,7 @@ export const removeToken = () => {
 export const getUserFromToken = () => {
   try {
     const token = getToken();
+    console.log(token);
     if (!token) return null;
 
     const decoded: User = jwtDecode(token);
