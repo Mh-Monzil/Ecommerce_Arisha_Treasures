@@ -36,6 +36,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store";
 
 const data = {
   navMain: [
@@ -96,6 +98,8 @@ const data = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const path = usePathname();
+  const user: { name?: string; email: string; role: string } | null =
+    useSelector((state: RootState) => state.auth.user);
 
   return (
     <Sidebar variant="inset" {...props}>
@@ -170,15 +174,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   <Avatar className="h-8 w-8 rounded-lg">
                     <AvatarImage
                       src="/placeholder.svg?height=32&width=32"
-                      alt="Sarah"
+                      alt={user?.name}
                     />
-                    <AvatarFallback className="rounded-lg">SA</AvatarFallback>
+                    <AvatarFallback className="rounded-lg">
+                      {user?.name}
+                    </AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
-                    <span className="truncate font-semibold">
-                      Sarah Anderson
-                    </span>
-                    <span className="truncate text-xs">Store Manager</span>
+                    <span className="truncate font-semibold"></span>
+                    <span className="truncate text-xs">{user?.role}</span>
                   </div>
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
