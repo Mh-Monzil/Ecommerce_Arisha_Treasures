@@ -11,4 +11,5 @@ export interface IProduct {
   rating: number;
   ratingCount: number;
   isDeleted?: boolean;
+  createdAt: string;
 }

@@ -324,7 +324,7 @@ const ProductsPage = () => {
                       </div>
                     </TableCell>
                     <TableCell>{product.category}</TableCell>
-                    <TableCell>${product.price}</TableCell>
+                    <TableCell>৳{product.price}</TableCell>
                     <TableCell>
                       <div className="flex items-center space-x-2">
                         {getStockIcon(product.stock)}
@@ -397,7 +397,7 @@ const ProductsPage = () => {
                     {product.category}
                   </p>
                   <div className="flex items-center justify-between">
-                    <span className="text-lg font-bold">${product.price}</span>
+                    <span className="text-lg font-bold">৳{product.price}</span>
                     <div className="flex items-center space-x-1">
                       <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                       <span className="text-sm">{product.rating}</span>

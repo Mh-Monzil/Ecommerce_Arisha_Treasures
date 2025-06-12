@@ -1,36 +1,28 @@
 "use client";
 
-import arrival1 from "@/assets/new_arrivals/new-arrival1.jpeg";
-import arrival2 from "@/assets/new_arrivals/new-arrival2.jpeg";
-import arrival3 from "@/assets/new_arrivals/new-arrival3.jpeg";
-import arrival4 from "@/assets/new_arrivals/new-arrival4.jpeg";
-import ProductCard, { TProduct } from "./shared/ProductCard";
+// import arrival1 from "@/assets/new_arrivals/new-arrival1.jpeg";
+// import arrival2 from "@/assets/new_arrivals/new-arrival2.jpeg";
+// import arrival3 from "@/assets/new_arrivals/new-arrival3.jpeg";
+// import arrival4 from "@/assets/new_arrivals/new-arrival4.jpeg";
+import ProductCard from "./shared/ProductCard";
 import { CircleArrowRight } from "lucide-react";
-
-const products: TProduct[] = [
-  {
-    title: "REPUBLIC KALANI D4-A-RHEA | EID LUXURY LAWN",
-    price: "৳9,999.00",
-    image: arrival1,
-  },
-  {
-    title: "REPUBLIC KALANI D1-B-ZEHRA | EID LUXURY LAWN",
-    price: "৳8,999.00",
-    image: arrival2,
-  },
-  {
-    title: "REPUBLIC KALANI D1-A - AYRA | EID LUXURY LAWN",
-    price: "৳7,999.00",
-    image: arrival3,
-  },
-  {
-    title: "REPUBLIC KALANI D3-B-SITARA | EID LUXURY LAWN",
-    price: "৳8,999.00",
-    image: arrival4,
-  },
-];
+import { useGetAllProductsQuery } from "@/features/productApi";
+import { IProduct } from "@/interfaces/product";
 
 const NewArrivals = () => {
+  const { data: products } = useGetAllProductsQuery({});
+
+  const latestProducts: IProduct[] | undefined = products?.data
+    ? [...products.data]
+        .sort(
+          (a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        )
+        .slice(0, 4)
+    : undefined;
+
+  console.log(latestProducts);
+
   return (
     <div className="pt-10 lg:pt-20 px-4">
       <div className="flex items-center justify-between">
@@ -41,7 +33,7 @@ const NewArrivals = () => {
         </p>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-4">
-        {products.map((product, index) => (
+        {latestProducts?.map((product: IProduct, index: number) => (
           <ProductCard key={index} product={product} />
         ))}
       </div>

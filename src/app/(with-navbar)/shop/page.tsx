@@ -488,7 +488,7 @@ const ShopPage = () => {
                       <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-2">
                           <span className="text-xl font-bold">
-                            $
+                            ৳
                             {(
                               product.price -
                               (product.price * product.discount) / 100
@@ -496,7 +496,7 @@ const ShopPage = () => {
                           </span>
                           {product.price && (
                             <span className="text-lg text-muted-foreground line-through">
-                              ${product.price}
+                              ৳{product.price}
                             </span>
                           )}
                         </div>
@@ -556,15 +556,15 @@ const ShopPage = () => {
                           <div className="text-right">
                             <div className="flex items-center space-x-2 mb-3">
                               <span className="text-2xl font-bold">
-                                $
+                                ৳
                                 {(
-                                  product.price *
-                                  (product.discount / 100)
+                                  product.price -
+                                  (product.price * product.discount) / 100
                                 ).toFixed(2)}
                               </span>
                               {product.price && (
                                 <span className="text-lg text-muted-foreground line-through">
-                                  ${product.price}
+                                  ৳{product.price}
                                 </span>
                               )}
                             </div>

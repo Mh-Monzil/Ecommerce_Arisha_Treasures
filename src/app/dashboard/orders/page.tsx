@@ -239,7 +239,7 @@ const OrdersPage = () => {
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">${totalRevenue.toFixed(2)}</div>
+            <div className="text-2xl font-bold">৳{totalRevenue.toFixed(2)}</div>
             <p className="text-xs text-muted-foreground">
               <span className="text-green-600">+8.2%</span> from last month
             </p>
@@ -600,7 +600,7 @@ const OrdersPage = () => {
                     <Separator />
                     <div className="flex justify-between items-center font-medium">
                       <span>Total</span>
-                      <span>${selectedOrder.totalPrice.toFixed(2)}</span>
+                      <span>৳{selectedOrder.totalPrice.toFixed(2)}</span>
                     </div>
                   </div>
                 </CardContent>

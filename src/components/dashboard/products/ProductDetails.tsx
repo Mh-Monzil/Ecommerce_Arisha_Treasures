@@ -111,7 +111,7 @@ const ProductDetails = ({
             </div>
 
             <div className="mt-4">
-              <div className="text-2xl font-bold">${product.price}</div>
+              <div className="text-2xl font-bold">৳{product.price}</div>
               <div className="flex items-center mt-1">
                 <Badge variant="outline" className="mr-2">
                   {product.category}
