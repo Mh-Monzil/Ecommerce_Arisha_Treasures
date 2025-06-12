@@ -3,8 +3,10 @@ import Image from "next/image";
 import React, { useState } from "react";
 import { Button } from "../ui/button";
 import { IProduct } from "@/interfaces/product";
+import { useCart } from "../cart/CartProvider";
 
 const ProductCard = ({ product }: { product: IProduct }) => {
+  const { addToCart } = useCart();
   const [isWishlist, setIsWishlist] = useState(false);
 
   const renderStars = (rating: number) => {
@@ -49,7 +51,10 @@ const ProductCard = ({ product }: { product: IProduct }) => {
         <h3 className="text-lg font-bold text-gray-800">{product.title}</h3>
         <p>{renderStars(product.rating)}</p>
         <p className="text-lg font-bold text-rose-600 pt-1">৳{product.price}</p>
-        <Button className="w-full mt-3 bg-white text-black border hover:bg-rose-900 hover:text-white duration-200 ease-in-out cursor-pointer">
+        <Button
+          onClick={() => addToCart(product)}
+          className="w-full mt-3 bg-white text-black border hover:bg-rose-900 hover:text-white duration-200 ease-in-out cursor-pointer"
+        >
           Add to Cart
         </Button>
       </div>

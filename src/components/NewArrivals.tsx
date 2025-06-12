@@ -1,13 +1,10 @@
 "use client";
 
-// import arrival1 from "@/assets/new_arrivals/new-arrival1.jpeg";
-// import arrival2 from "@/assets/new_arrivals/new-arrival2.jpeg";
-// import arrival3 from "@/assets/new_arrivals/new-arrival3.jpeg";
-// import arrival4 from "@/assets/new_arrivals/new-arrival4.jpeg";
 import ProductCard from "./shared/ProductCard";
 import { CircleArrowRight } from "lucide-react";
 import { useGetAllProductsQuery } from "@/features/productApi";
 import { IProduct } from "@/interfaces/product";
+import Link from "next/link";
 
 const NewArrivals = () => {
   const { data: products } = useGetAllProductsQuery({});
@@ -21,14 +18,12 @@ const NewArrivals = () => {
         .slice(0, 4)
     : undefined;
 
-  console.log(latestProducts);
-
   return (
     <div className="pt-10 lg:pt-20 px-4">
       <div className="flex items-center justify-between">
         <h2 className="text-4xl lg:text-5xl font-bold">New Arrivals</h2>
         <p className="font-medium flex items-center hover:text-rose-600 cursor-pointer">
-          <span>See All</span>
+          <Link href="/shop">See All</Link>
           <CircleArrowRight className="inline-block ml-2 h-5" />
         </p>
       </div>
