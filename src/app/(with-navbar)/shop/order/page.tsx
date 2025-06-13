@@ -127,10 +127,8 @@ const OrderPage = () => {
         })),
         paymentMethod: "cash on delivery",
       };
-      console.log(orderData);
 
       const result = await placeOrder(orderData).unwrap();
-      console.log(result);
 
       if (!result.success) {
         toast.error("Order failed!");

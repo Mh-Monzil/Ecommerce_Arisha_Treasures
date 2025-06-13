@@ -82,8 +82,8 @@ const ShopPage = () => {
         appliedFilters.categories.length === 0 ||
         appliedFilters.categories.includes(product.category);
       const matchesPrice =
-        product.price >= appliedFilters.priceRange[0] &&
-        product.price <= appliedFilters.priceRange[1];
+        product.price >= appliedFilters?.priceRange[0] &&
+        product.price <= appliedFilters?.priceRange[1];
       const matchesRating =
         appliedFilters.ratings.length === 0 ||
         appliedFilters.ratings.some((rating) => product.rating >= rating);
@@ -106,8 +106,6 @@ const ShopPage = () => {
       );
     }
   );
-
-  console.log(filteredProducts);
 
   if (!filteredProducts) {
     return <div>Loading...</div>;
@@ -183,8 +181,8 @@ const ShopPage = () => {
       appliedFilters.ratings.length +
       (appliedFilters.inStock ? 1 : 0) +
       (appliedFilters.sale ? 1 : 0) +
-      (appliedFilters.priceRange[0] !== 0 ||
-      appliedFilters.priceRange[1] !== 500
+      (appliedFilters?.priceRange[0] !== 0 ||
+      appliedFilters?.priceRange[1] !== 500
         ? 1
         : 0)
     );
@@ -206,9 +204,6 @@ const ShopPage = () => {
       </div>
     );
   };
-
-  console.log(products);
-  console.log(categories);
 
   return (
     <Container className="">

@@ -24,11 +24,8 @@ export default function LoginPage() {
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData);
 
-    console.log(data);
-
     try {
       const res = await loginUser(data);
-      console.log(res);
 
       if (res.data) {
         setToken(res.data.data);

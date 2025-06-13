@@ -164,15 +164,13 @@ const ProductsPage = () => {
 
   const handleConfirmDelete = async (id: string) => {
     const res = await deleteProduct(id);
-    console.log(res);
+
     if (res.data.success) {
       toast.success("Product deleted successfully!");
     }
     refetch();
     setIsDeleteProductOpen(false);
   };
-
-  console.log(category);
 
   return (
     <div className="space-y-6">

@@ -11,7 +11,6 @@ const AddCategory = ({ refetch }: { refetch: () => void }) => {
   const [createCategory] = useCreateCategoryMutation();
   const [category, setCategory] = useState("");
   const [isAddCategoryOpen, setIsAddCategoryOpen] = useState(false);
-  console.log(category);
 
   const handleAddCategory = async () => {
     try {

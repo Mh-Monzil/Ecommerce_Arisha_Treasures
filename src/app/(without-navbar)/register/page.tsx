@@ -28,8 +28,6 @@ export default function RegisterPage() {
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData);
 
-    console.log(data.name, data.email, data.password);
-
     if (!data.name || !data.email || !data.password || !data.confirmPassword) {
       setError("All fields are required");
       return;
@@ -44,7 +42,6 @@ export default function RegisterPage() {
 
     try {
       const res = await registerUser(data);
-      console.log(res);
 
       if (res.data) {
         toast.success("Registration successful! Redirecting to login...");

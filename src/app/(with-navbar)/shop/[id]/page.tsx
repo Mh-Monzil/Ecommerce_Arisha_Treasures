@@ -46,9 +46,6 @@ export default function ProductDetailPage() {
 
   const product = productData?.data;
 
-  console.log(product);
-  console.log(reviewsData);
-
   if (!product) {
     return (
       <div className="min-h-screen flex items-center justify-center">

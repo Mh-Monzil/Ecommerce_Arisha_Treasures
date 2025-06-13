@@ -1097,7 +1097,6 @@ const OrdersPage = () => {
                   <Button
                     onClick={() => {
                       // Here you would typically save the changes
-                      console.log("Saving order changes:", editingOrder);
                       setIsEditOrderOpen(false);
                       updateEditedOrder();
                     }}

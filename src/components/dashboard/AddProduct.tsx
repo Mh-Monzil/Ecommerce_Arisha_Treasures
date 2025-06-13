@@ -122,7 +122,7 @@ const AddProduct = ({
                       <SelectValue placeholder="Select category" />
                     </SelectTrigger>
                     <SelectContent>
-                      {categories.map((category: string, index: number) => (
+                      {categories?.map((category: string, index: number) => (
                         <SelectItem
                           key={index}
                           value={category}
