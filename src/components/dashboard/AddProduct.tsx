@@ -34,10 +34,12 @@ const AddProduct = ({
   const [createProduct] = useCreateProductMutation();
   const [isAddProductOpen, setIsAddProductOpen] = useState(false);
   const [images, setImages] = useState<File[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string>(
-    categories[1] || ""
-  );
   const [isProductSubmitting, setIsProductSubmitting] = useState(false);
+  const defaultCategory = categories?.[0] || "";
+  const [selectedCategory, setSelectedCategory] =
+    useState<string>(defaultCategory);
+
+  if (!categories || categories.length === 0) return null;
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {

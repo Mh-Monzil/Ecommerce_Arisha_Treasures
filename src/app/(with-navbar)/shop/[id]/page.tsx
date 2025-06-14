@@ -141,9 +141,13 @@ export default function ProductDetailPage() {
               </div>
               <div className="flex items-center space-x-3">
                 <span className="text-3xl font-bold">
-                  ${product.price * product.discount}
+                  ৳
+                  {(
+                    product.price -
+                    (product.price * product.discount) / 100
+                  ).toFixed(2)}
                 </span>
-                {product.price && (
+                {product.price && product.discount > 0 && (
                   <span className="text-xl text-muted-foreground line-through">
                     ${product.price}
                   </span>

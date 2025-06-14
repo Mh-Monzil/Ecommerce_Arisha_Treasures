@@ -4,6 +4,7 @@ import React from "react";
 import { Button } from "./ui/button";
 import Image from "next/image";
 import bannerImg from "@/assets/treasure-banner3.png";
+import Link from "next/link";
 
 const Banner = () => {
   return (
@@ -18,7 +19,7 @@ const Banner = () => {
           style.
         </p>
         <Button className="w-full lg:w-fit cursor-pointer rounded-sm text-lg p-6 mt-4">
-          Shop Now
+          <Link href="/shop">Shop Now</Link>
         </Button>
         <div className="flex flex-wrap items-center lg:items-start justify-center lg:justify-start gap-y-4 mt-5 lg:mt-12">
           <div className="text-center lg:text-left border-r lg:pr-4 pr-2">
